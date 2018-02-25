@@ -1,10 +1,7 @@
 import React from 'react';
 
 const DropdownSearch = props => {
-
     const { handleDropdownSearch, eventList } = props;
-
-    console.log(eventList);
 
     return (
         <div>
@@ -21,7 +18,7 @@ const DropdownSearch = props => {
         </div>
     );
 
-    // TODO: Fix bug. Cannot select first selection. Also try to show selected event in the dropDown.
+    // TODO: Fix bug. Cannot select first selection.
     function createEventList (events) {
         return events.map((event, i) => {
             const eventName = event.name;

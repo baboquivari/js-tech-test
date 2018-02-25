@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 
 const Event = props => {
     const { eventName, eventId, primaryMarket, outcomes, showDecimalOdds } = props;
-
     const marketId = primaryMarket[0].marketId;
     const marketOutcomes = outcomes[marketId];
 
-    // TODO: Show the start time next to the desc. Just show absolute value, don't try to calc time elapsed.
     return (
         <Link to={`/event/${eventId}`}>
             <li>{ eventName }</li>
 
+            {/* this div is 'display: none;' until user clicks 'Show Primary Markets' */}
             <div className="primaryMarket">
                 <div id="primaryMarketName">
                     { primaryMarket[0].name }

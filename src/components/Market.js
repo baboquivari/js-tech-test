@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Market = props => {
-
     const { name, handleMarketClick, index } = props;
     
     return (
@@ -9,7 +8,7 @@ const Market = props => {
             className="market"
             onClick={handleMarketClick.bind(null, index)}
         >
-            <h4>{ name }</h4>
+            <h4>{ index > 9 ? name + ' ↓' : name }</h4>
         </div>
     );
 };

@@ -43,3 +43,5 @@ describe('Event', () => {
 		expect(toJson(output)).toMatchSnapshot();
     });
 });
+
+// TODO: Add more unit tests. Also, how does my app respond to bad API responses?

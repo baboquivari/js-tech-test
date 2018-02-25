@@ -16,12 +16,12 @@ class EventList extends Component {
             showDecimalOdds: false
         };
 
-        this.createEvents = this.createEvents.bind(this)
-        this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this)
+        this.createEvents = this.createEvents.bind(this);
+        this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
     }
 
     componentDidUpdate () {
-        // TODO: All this CSS needs to tidied up. I should create some class definitions and then just change classNames, instead of clogging this component up with CSS logic.        
+        // TODO: Create some class definitions and then just change relevant classNames instead of clogging this component up with CSS logic.        
         this.state.showPrimaryMarket ? styleDivs('block') : styleDivs('none');
         
         function styleDivs (action) {
@@ -35,7 +35,6 @@ class EventList extends Component {
 
     componentDidMount () {
         axios
-            // TODO: Pop this URL into an ENV variable / config file
             .get('http://localhost:8888/football/live?primaryMarkets=true')
             .then(res => {
                 this.setState({
@@ -45,39 +44,30 @@ class EventList extends Component {
                 });
             })
             .catch(err => {
-                // TODO: Have better error handling than just cLogs here
-                return console.log(err);
+                // TODO: Could implement better handling throughout the app, creating a standardised error handler for example.
+                return console.log(`Error in componentDidMount: ${err}`);
             });
 
-        // FIXME: Uncomment to continue on with WS stuff
-        return;
+        // *** WebSocket Logic ***
+        // Would like to work more on this and implement visual changes based on 'status.suspended' values returned from the WebSocket. Currently I've just subscribed to all Fulltime-Result-Market Updates for the front page of the app but I'm not doing any action when a relevant update is received.
 
-        // connect to WebSocket server
-        const w = new WebSocket('ws://localhost:8889');
+        const socket = new WebSocket('ws://localhost:8889');
         
-        w.onmessage = event => {
-            // TODO: Fix cannot read property eventId of undefined
+        socket.onmessage = event => {
             const update = JSON.parse(event.data);
-            // console.log(update);
+            
+            if (!update.data) return;
 
-            // if the incoming update is a fulltime-result-market update...
-            if (this.state.primaryMarkets[update.data.eventId][0].marketId == update.data.marketId) {
-                // TODO: Now write the code in this console.log
-                console.log('now lets update the specific full-time-result market\'s status obj');
+            // if the incoming update is a Fulltime-Result-Market update...
+            if (this.state.primaryMarkets[update.data.eventId][0].marketId === update.data.marketId) {
+                console.log('Update');
             }
+        };
 
-            console.log(this.state.primaryMarkets[update.data.eventId][0].marketId);
-            console.log(update.data.marketId);
-
-        }
-
-        w.onopen = e => {
-            console.log('socket opened');
-
-            // SUBSCRIPTIONS
-            // sub to all events on homepage. event subscription. this one is SLOW, not even sure if it's working.
+        socket.onopen = () => {
+            // subscribe to all events on homepage
             this.state.eventList.forEach(event => {
-                w.send(JSON.stringify({
+                socket.send(JSON.stringify({
                     type: 'subscribe', 
                     keys: [`e.${event.eventId}`], 
                     clearSubscription: false}
@@ -85,32 +75,19 @@ class EventList extends Component {
             });
 
             // Subscribe to all market updates (irrespective of event)
-            w.send(JSON.stringify({type: "subscribe", keys: ["m.*"]}));
-            
-            // REQUESTS
-
-            // Fetch market data
-            // w.send(JSON.stringify({type: "market", id: 93650821 }));
-            // // request Event data (can do this through the Sportsbook API too)
-            // w.send(JSON.stringify({type: "event", id: 21249949 }));
-
+            socket.send(JSON.stringify({type: 'subscribe', keys: ['m.*']}));
         }
 
-        w.onclose = event => {
+        socket.onclose = () => {
             console.log('WebSocket Closed');
-        }
+        };
     }
 
     render () {
-        console.log(this.state);
-
         return (
             <div>
-
                 <Header handleCheckBoxClick={this.handleCheckBoxClick}/>
-
                 <ShowMarketsCheckBox handleCheckBoxClick={this.handleCheckBoxClick} />
-
                 <div className="eventList">
                     <ul>
                         { this.createEvents(this.state.eventList) }

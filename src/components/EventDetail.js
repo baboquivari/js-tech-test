@@ -49,25 +49,15 @@ class EventDetail extends Component {
                         });
                     })
                     .catch(err => {
-                        return console.log('Error in 2nd axios request' + err);
+                        return console.log(`Error in second axios request: ${err}`);
                     });
             })
             .catch(err => {
-                return console.log('Error in componentDidMount-EventDetail' + err);
+                return console.log(`Error in componentDidMount-EventDetail: ${err}`);
             });
-
     }
 
     render () {
-        console.log(this.state);
-
-        let fetching;
-        if (this.state.lazyLoadFetching) {
-            fetching = "Fetching"
-        } else if (!this.state.lazyLoadFetching) {
-            fetching = "";
-        }
-
         return (
             <div>
                 <Header handleCheckBoxClick={this.handleCheckBoxClick}/>
@@ -93,9 +83,9 @@ class EventDetail extends Component {
                         { this.createMarkets(this.state.markets, this.state.showAllMarkets) }
                     </div>
 
-                    <div id={`showAllMarketsButton${fetching}`}>
+                    <div id="showAllMarketsButton">
                         <button onClick={this.handleShowAllMarkets}>
-                            Show All Markets
+                            {this.state.showAllMarkets ? 'Show Less' : 'Show All Markets'}
                         </button>
                     </div>
                 </div>
@@ -106,7 +96,6 @@ class EventDetail extends Component {
     createMarkets (markets, showAllMarkets) {
         const result = markets.map((market, i) => {
             const marketId = market.marketId;
-
             return (
                 <div key={i}>
                     <Market 
@@ -125,12 +114,13 @@ class EventDetail extends Component {
             );       
         });
 
+        // only show first 10 markets on page-load as we don't have the outcomes loaded yet for the rest
         return showAllMarkets ? result : result.slice(0, 10);
     }
 
     handleShowAllMarkets () {
         this.setState({
-            showAllMarkets: true
+            showAllMarkets: !this.state.showAllMarkets
         });
     }
 
@@ -149,6 +139,7 @@ class EventDetail extends Component {
             .get(`http://localhost:8888/sportsbook/market/${marketId}`)
             .then(res => {
                 const outcomes = res.data.outcomes[marketId];
+
                 this.setState({
                     outcomes: Object.assign({}, this.state.outcomes, {
                         [marketId]: outcomes 
@@ -157,7 +148,7 @@ class EventDetail extends Component {
                 });
             })
             .catch(err => {
-                return console.log('Error in handleMarketClick' + err);
+                return console.log(`Error in handleMarketClick: ${err}`);
             });
     }
 
@@ -174,8 +165,6 @@ class EventDetail extends Component {
         this.props.history.push(`/event/${eventId}`);
         window.location.reload();
     }
-
 }
-
 
 export default EventDetail;
