@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event should render correctly 1`] = `
+<Link
+  replace={false}
+  to="/event/0000"
+>
+  <li>
+    test
+  </li>
+  <div
+    className="primaryMarket"
+  >
+    <div
+      id="primaryMarketName"
+    >
+      Test
+      ||
+    </div>
+    <div
+      id="primaryMarketDescription"
+    >
+      Football
+    </div>
+    <div
+      id="primaryMarketOutcomes"
+    >
+      <ul>
+        <li
+          key="0"
+        >
+          2/6
+        </li>
+      </ul>
+    </div>
+  </div>
+</Link>
+`;

@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import './css/App.css';
-
 import EventList from './components/EventList';
 import EventDetail from './components/EventDetail';
+import './css/App.css';
 
-// TODO: Need to figure out how to pass props down in ReactRouterV4
 ReactDOM.render(
     <BrowserRouter>
         <Switch>
@@ -14,6 +12,7 @@ ReactDOM.render(
             <Route path='/event/:eventId' component={EventDetail} />
         </Switch>
     </BrowserRouter>,
+
     document.getElementById('app')
 );
 
@@ -28,3 +27,5 @@ ReactDOM.render(
 // Think about loading spinners for your main pages when inital requests are firing
 
 // TODO: Pull in docker.yml and write my own Dockerfile with a START command which basically runs webpack dev server and a TEST command which runs some Jest Tests.
+
+// Wanted to add more unit tests but not enough time

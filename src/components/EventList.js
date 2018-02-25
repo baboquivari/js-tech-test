@@ -48,9 +48,62 @@ class EventList extends Component {
                 // TODO: Have better error handling than just cLogs here
                 return console.log(err);
             });
+
+        // FIXME: Uncomment to continue on with WS stuff
+        return;
+
+        // connect to WebSocket server
+        const w = new WebSocket('ws://localhost:8889');
+        
+        w.onmessage = event => {
+            // TODO: Fix cannot read property eventId of undefined
+            const update = JSON.parse(event.data);
+            // console.log(update);
+
+            // if the incoming update is a fulltime-result-market update...
+            if (this.state.primaryMarkets[update.data.eventId][0].marketId == update.data.marketId) {
+                // TODO: Now write the code in this console.log
+                console.log('now lets update the specific full-time-result market\'s status obj');
+            }
+
+            console.log(this.state.primaryMarkets[update.data.eventId][0].marketId);
+            console.log(update.data.marketId);
+
+        }
+
+        w.onopen = e => {
+            console.log('socket opened');
+
+            // SUBSCRIPTIONS
+            // sub to all events on homepage. event subscription. this one is SLOW, not even sure if it's working.
+            this.state.eventList.forEach(event => {
+                w.send(JSON.stringify({
+                    type: 'subscribe', 
+                    keys: [`e.${event.eventId}`], 
+                    clearSubscription: false}
+                ));
+            });
+
+            // Subscribe to all market updates (irrespective of event)
+            w.send(JSON.stringify({type: "subscribe", keys: ["m.*"]}));
+            
+            // REQUESTS
+
+            // Fetch market data
+            // w.send(JSON.stringify({type: "market", id: 93650821 }));
+            // // request Event data (can do this through the Sportsbook API too)
+            // w.send(JSON.stringify({type: "event", id: 21249949 }));
+
+        }
+
+        w.onclose = event => {
+            console.log('WebSocket Closed');
+        }
     }
 
     render () {
+        console.log(this.state);
+
         return (
             <div>
 

@@ -1,16 +1,7 @@
-/* .primaryMarket {
-    display: none;
-} */
-
 #showAllMarketsButtonFetching {
     visibility: hidden;
 }
 
-/* .outcomeOdds {
-    display: none;
-} */
-
-/* .outcome show {
-    display: block;
-} */
-
+.market {
+    cursor: pointer;
+}

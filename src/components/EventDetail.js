@@ -4,7 +4,6 @@ import Outcomes from './Outcomes';
 import Header from './Header';
 import DropdownSearch from './DropdownSearch';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 
 class EventDetail extends Component {
     constructor (props) {
@@ -95,7 +94,6 @@ class EventDetail extends Component {
                     </div>
 
                     <div id={`showAllMarketsButton${fetching}`}>
-                        {/* TODO: CHANGE BUTTON TO 'SHOW LESS' WHEN THIS.STATE.SHOWALLMARKETS == TRUE */}
                         <button onClick={this.handleShowAllMarkets}>
                             Show All Markets
                         </button>
