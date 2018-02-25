@@ -6,12 +6,12 @@ const Event = props => {
 
     const marketId = primaryMarket[0].marketId;
     const marketOutcomes = outcomes[marketId];
-    // console.log(marketOutcomes);
-    // console.log(primaryMarket[0]);
 
+    // TODO: Show the start time next to the desc. Just show absolute value, don't try to calc time elapsed.
     return (
         <Link to={`/event/${eventId}`}>
             <li>{ eventName }</li>
+
             <div className="primaryMarket">
                 <div id="primaryMarketName">
                     { primaryMarket[0].name }
@@ -38,7 +38,7 @@ const Event = props => {
                     { 
                         showDecimalOdds
                         ? outcome.price.decimal  
-                        : `${outcome.price.num} / ${outcome.price.den}`
+                        : `${outcome.price.num}/${outcome.price.den}`
                     }
                 </li>
             );

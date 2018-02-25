@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Event from './Event';
-import CheckBoxes from './CheckBoxes';
+import Header from './Header';
+import ShowMarketsCheckBox from './ShowMarketsCheckBox';
 import axios from 'axios';
-
+            
 class EventList extends Component {
-
     constructor (props) {
         super(props);
 
@@ -21,22 +21,23 @@ class EventList extends Component {
     }
 
     componentDidUpdate () {
+        // TODO: All this CSS needs to tidied up. I should create some class definitions and then just change classNames, instead of clogging this component up with CSS logic.        
         this.state.showPrimaryMarket ? styleDivs('block') : styleDivs('none');
-
+        
         function styleDivs (action) {
             const primaryMarketDivs = document.querySelectorAll('.primaryMarket');
+
             primaryMarketDivs.forEach(div => {
                 div.style.display = action;
-            })
+            });
         }
     }
 
     componentDidMount () {
         axios
-            // TODO: Pop this URL into an ENV variable
+            // TODO: Pop this URL into an ENV variable / config file
             .get('http://localhost:8888/football/live?primaryMarkets=true')
             .then(res => {
-
                 this.setState({
                     eventList: res.data.events,
                     primaryMarkets: res.data.markets,
@@ -52,7 +53,10 @@ class EventList extends Component {
     render () {
         return (
             <div>
-                <CheckBoxes handleCheckBoxClick={this.handleCheckBoxClick} />
+
+                <Header handleCheckBoxClick={this.handleCheckBoxClick}/>
+
+                <ShowMarketsCheckBox handleCheckBoxClick={this.handleCheckBoxClick} />
 
                 <div className="eventList">
                     <ul>
