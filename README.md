@@ -38,7 +38,13 @@ docker-compose up
 npm start
 ```
 
-4) To run the unit test:
+4) Navigate to the following URL in the browser:
+
+```javascript
+localhost:9090
+```
+
+5) To run the unit test:
 
 ```javascript
 npm test
