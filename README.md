@@ -20,6 +20,8 @@ That being said, I would've liked to:
 
 ### How to run the app
 
+Please make sure to have Node >v6 installed.
+
 1) Install dependencies:
 
 ```javascript
