@@ -20,7 +20,7 @@ That being said, I would've liked to:
 
 ### How to run the app
 
-Please make sure to have Node >v6 installed.
+Please make sure to have Node v6 or higher and Docker installed and running:
 
 1) Install dependencies:
 
@@ -34,7 +34,7 @@ npm install
 docker-compose up
 ```
 
-3) Start the app:
+3) Start the app (in a separate terminal window):
 
 ```javascript
 npm start
